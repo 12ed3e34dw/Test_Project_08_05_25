@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useEffect, useState} from "react";
 import {createStackNavigation} from "@react-native/stack";
 import * as trace_events from "node:trace_events";
@@ -11,25 +11,43 @@ const UsersScreen = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+      // fetch возращает promis
     fetch("http://localhost:3000/users")
         .then(response => response.json())
-        .then(data => {setUsers(data)
-          console.log(data)})
-        .catch(error => console.log(error));
-    //После запроса FALSE до этого True
-   setLoading(false);
+        .then(data => {setUsers(data)})
+
+          // console.log(data)})
+
+        .catch(error => console.log(error))
+        //После запроса FALSE до этого True
+    .finally(() => setLoading(false));
+    //setLoading(false)
+
   }, [])
+
+
+  if(true)
+  {
+    return <ActivityIndicator size="large" color="blue" style={{marginTop:20}} />;
+  }
 
 
 
   return (
       <View style={styles.container}>
-
+      <FlatList data={} renderItem={({ item }) => (
+    <TouchableOpacity
+        style={{padding:15,borderBottomColor:1, borderBottomColor:''}}>
+      <View>{item.username}</View>
+      <View>{item.email}</View>
+    </TouchableOpacity>
+          )}
       </View>
+
   )
 }
 
-
+//
 
 const UserDetailsScreen=()=>{
 
